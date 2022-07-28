@@ -3,9 +3,14 @@ package com.techelevator.application;
 import com.techelevator.ui.UserInput;
 import com.techelevator.ui.UserOutput;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VendingMachine {
     UserInput userInput = new UserInput();
     UserOutput userOutput = new UserOutput();
+
+    private List<Inventory> listOfIndexSlots = new ArrayList<Inventory>();
 
     public void run() {
         while(true) {
