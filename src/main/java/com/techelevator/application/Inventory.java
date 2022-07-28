@@ -12,6 +12,17 @@ public class Inventory {
     private String productType;
     private int productRemaining = 6;
 
+    @Override
+    public String toString() {
+        return "Inventory{" +
+                "slotId='" + slotId + '\'' +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", productType='" + productType + '\'' +
+                ", productRemaining=" + productRemaining +
+                '}';
+    }
+
     public Inventory(String[] productInfo){
         this.slotId = productInfo[0];
         this.productName = productInfo[1];

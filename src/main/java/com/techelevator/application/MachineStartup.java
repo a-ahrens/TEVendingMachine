@@ -10,9 +10,8 @@ public class MachineStartup {
     private final String pathName = "catering.csv";
     private final String fileName = "catering.csv";
 
-    private List<String> inventoryLines = new ArrayList<String>();
-
-    private File inventoryFile = new File(pathName, fileName);
+    private List<String> inventoryLines = new ArrayList<String>(); // sample of each list index: "A1,U-Chews,1.65,Gum"
+    private File inventoryFile = new File(fileName);
 
     public void loadInventoryList(){
         try(Scanner readFile = new Scanner(inventoryFile)){
@@ -26,15 +25,17 @@ public class MachineStartup {
         }
     }
 
-    public void createInventory(ArrayList<String> inventoryLines){
+    public List<Inventory> createInventorySlots(){
+        //VendingMachine vendingMachine;
+        List<Inventory> listOfInventoryObjects = new ArrayList<>();
+
         for(String input: inventoryLines){
             String[] attributeArray = input.split(",");
-            //String indexName = attributeArray[0];
 
-            Inventory index = new Inventory(attributeArray);
-
-
-
+             Inventory indexSlot = new Inventory(attributeArray);
+             //add this new inventory object into Vending Machine list: listOfIndexSlot
+            listOfInventoryObjects.add(indexSlot);
         }
+        return listOfInventoryObjects;
     }
 }

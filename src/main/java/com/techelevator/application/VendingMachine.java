@@ -19,7 +19,7 @@ public class VendingMachine {
 
             System.out.println(choice);
             if(choice.equals("display")) {
-                // display the items
+                userOutput.displayInventory();
             }
             else if(choice.equals("purchase")) {
                 // make a purchase
@@ -29,5 +29,14 @@ public class VendingMachine {
                 break;
             }
         }
+    }
+
+    public void loadIndexSlots() {
+        MachineStartup machineStartup = new MachineStartup();
+        listOfIndexSlots = machineStartup.createInventorySlots();
+    }
+
+    public List<Inventory> getListOfIndexSlots() {
+        return listOfIndexSlots;
     }
 }
