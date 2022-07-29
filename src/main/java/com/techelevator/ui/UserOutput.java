@@ -1,11 +1,13 @@
 package com.techelevator.ui;
 
 import com.techelevator.application.Inventory;
+import com.techelevator.application.MachineStartup;
 import com.techelevator.application.VendingMachine;
 
 public class UserOutput {
 
-    VendingMachine vendingMachine = new VendingMachine();
+    //is making the program to crash
+   //MachineStartup vendingMachine = new MachineStartup();
 
     public void displayMessage(String message) {
         System.out.println();
@@ -23,8 +25,6 @@ public class UserOutput {
 
     public void displayInventory(){
         System.out.println("Test");
-        //for(Inventory index : vendingMachine.getListOfIndexSlots()){
-         //   System.out.println(index);
-        //}
+
     }
 }

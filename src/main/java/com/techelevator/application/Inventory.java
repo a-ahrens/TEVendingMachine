@@ -30,4 +30,23 @@ public class Inventory {
         this.productType = productInfo[3];
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public String getSlotId() {
+        return slotId;
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductRemaining(int productRemaining) {
+        this.productRemaining = productRemaining;
+    }
 }

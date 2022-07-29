@@ -36,6 +36,7 @@ public class MachineStartup {
              //add this new inventory object into Vending Machine list: listOfIndexSlot
             listOfInventoryObjects.add(indexSlot);
         }
+
         return listOfInventoryObjects;
     }
 }

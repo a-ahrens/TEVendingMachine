@@ -19,7 +19,7 @@ public class VendingMachine {
 
             System.out.println(choice);
             if(choice.equals("display")) {
-                userOutput.displayInventory();
+               userOutput.displayInventory();
             }
             else if(choice.equals("purchase")) {
                 // make a purchase

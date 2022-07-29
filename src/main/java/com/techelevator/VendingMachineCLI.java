@@ -10,10 +10,10 @@ public class VendingMachineCLI {
 		VendingMachine vendingMachine = new VendingMachine();
 		MachineStartup machineStartup = new MachineStartup();
 
+		vendingMachine.run();
+
 		machineStartup.loadInventoryList();
 		machineStartup.createInventorySlots();
-
-		vendingMachine.run();
 
 
 	}
