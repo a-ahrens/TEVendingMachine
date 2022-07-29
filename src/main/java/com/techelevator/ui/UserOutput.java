@@ -8,9 +8,6 @@ import java.util.List;
 
 public class UserOutput {
 
-    //is making the program to crash
-   //MachineStartup vendingMachine = new MachineStartup();
-
     public void displayMessage(String message) {
         System.out.println();
         System.out.println(message);
@@ -42,4 +39,14 @@ public class UserOutput {
                 "    " + productRemaining);
         }
     }
+
+
+    public void displayPurchaseScreen() {
+        System.out.println();
+        System.out.println("***************************************************");
+        System.out.println("                      Purchase");
+        System.out.println("***************************************************");
+        System.out.println();
+    }
+
 }

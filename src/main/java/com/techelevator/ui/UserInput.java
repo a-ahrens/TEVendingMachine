@@ -1,5 +1,7 @@
 package com.techelevator.ui;
 
+import com.techelevator.application.VendingMachine;
+
 import java.math.BigDecimal;
 import java.util.Scanner;
 
@@ -9,6 +11,7 @@ import java.util.Scanner;
  * Dependencies: None
  */
 public class UserInput {
+
     private Scanner scanner = new Scanner(System.in);
 
     public String getHomeScreenOption() {
@@ -41,7 +44,7 @@ public class UserInput {
 
     }
 
-    public String getPurchasingScreenOptions() {
+    public String getPurchasingScreenOptions(BigDecimal currentBalance) {
         System.out.println("What would you like to do?");
         System.out.println();
 
@@ -49,7 +52,7 @@ public class UserInput {
         System.out.println("S) Select Item");
         System.out.println("F) Finish Transaction");
         System.out.println();
-        System.out.println("Current money provided");
+        System.out.println("Current money provided $" + currentBalance);
         System.out.println();
         System.out.print("Please select an option: ");
 
@@ -74,14 +77,34 @@ public class UserInput {
     }
 
     public BigDecimal feedBill(){
-        //BigDecimal intToBigDecimal;
+
+        BigDecimal totalInserted = new BigDecimal(0.00);
+
         System.out.println("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
-        int bill = Integer.parseInt(scanner.nextLine());
-        if(bill == 1 || bill == 5 || bill == 10 || bill == 20) {
-           BigDecimal intToBigDecimal =  BigDecimal.valueOf(bill);
-            return intToBigDecimal;
-        }
-        return new BigDecimal(0);
+        //while(true){
+
+
+            int bill = Integer.parseInt(scanner.nextLine());
+
+            if(bill == 1 || bill == 5 || bill == 10 || bill == 20) {
+                totalInserted = totalInserted.add( new BigDecimal(bill));
+            } else{
+                System.out.println("Please insert valid bill");
+            }
+
+            //System.out.println("Do you want to feed more money? (Y/N)");
+        //}
+        return totalInserted;
+    }
+
+    public String selectProduct(){
+        System.out.print("Please select an item: ");
+
+        String selectedOption = scanner.nextLine();
+        String item = selectedOption.trim().toUpperCase();
+        System.out.println("You selected = " + item);
+
+        return item;
     }
 }
 

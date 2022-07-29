@@ -26,7 +26,6 @@ public class MachineStartup {
     }
 
     public List<Inventory> createInventorySlots(){
-        //VendingMachine vendingMachine;
         loadInventoryList();
         List<Inventory> listOfInventoryObjects = new ArrayList<>();
 
