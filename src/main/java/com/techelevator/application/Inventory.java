@@ -46,7 +46,7 @@ public class Inventory {
         return productType;
     }
 
-    public void setProductRemaining(int productRemaining) {
-        this.productRemaining = productRemaining;
+    public int getProductRemaining() {
+        return productRemaining;
     }
 }

@@ -8,12 +8,7 @@ public class VendingMachineCLI {
 
 	public static void main(String[] args) {
 		VendingMachine vendingMachine = new VendingMachine();
-		MachineStartup machineStartup = new MachineStartup();
-
 		vendingMachine.run();
-
-		machineStartup.loadInventoryList();
-		machineStartup.createInventorySlots();
 
 
 	}

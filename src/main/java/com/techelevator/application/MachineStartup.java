@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MachineStartup {
-    private final String pathName = "catering.csv";
+    //private final String pathName = "catering.csv";
     private final String fileName = "catering.csv";
 
     private List<String> inventoryLines = new ArrayList<String>(); // sample of each list index: "A1,U-Chews,1.65,Gum"
@@ -27,6 +27,7 @@ public class MachineStartup {
 
     public List<Inventory> createInventorySlots(){
         //VendingMachine vendingMachine;
+        loadInventoryList();
         List<Inventory> listOfInventoryObjects = new ArrayList<>();
 
         for(String input: inventoryLines){

@@ -4,6 +4,8 @@ import com.techelevator.application.Inventory;
 import com.techelevator.application.MachineStartup;
 import com.techelevator.application.VendingMachine;
 
+import java.util.List;
+
 public class UserOutput {
 
     //is making the program to crash
@@ -23,8 +25,21 @@ public class UserOutput {
         System.out.println();
     }
 
-    public void displayInventory(){
-        System.out.println("Test");
+    public void displayInventory(List<Inventory> listOfIndexSlots){
+        String productRemaining = "NO LONGER AVAILABLE";
 
+
+        System.out.println("Test");
+        System.out.println("Slot:     Name:      Price:      Product Type:       Product Remaining: ");
+        for (int i = 0; i < listOfIndexSlots.size(); i++) {
+
+            if (listOfIndexSlots.get(i).getProductRemaining() > 0 ){
+               productRemaining = String.valueOf(listOfIndexSlots.get(i).getProductRemaining());
+           }
+            System.out.println(listOfIndexSlots.get(i).getSlotId() + "   "
+                    + listOfIndexSlots.get(i).getProductName() +  "  " + listOfIndexSlots.get(i).getPrice() +
+                  "     "  +  listOfIndexSlots.get(i).getProductType() +
+                "    " + productRemaining);
+        }
     }
 }
