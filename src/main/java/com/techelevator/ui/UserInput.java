@@ -61,7 +61,6 @@ public class UserInput {
         System.out.println("option = " + option);
 
         if (option.equals("m")) {
-
             return "feed";
         }
         else if (option.equals("s")) {
@@ -76,24 +75,27 @@ public class UserInput {
 
     }
 
-    public BigDecimal feedBill(){
+    public BigDecimal feedBill(BigDecimal currentBalance){
 
         BigDecimal totalInserted = new BigDecimal(0.00);
 
-        System.out.println("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
-        //while(true){
+        while(true){
 
-
+            System.out.println("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
+            System.out.println("If you are done adding money, enter 0");
             int bill = Integer.parseInt(scanner.nextLine());
 
-            if(bill == 1 || bill == 5 || bill == 10 || bill == 20) {
-                totalInserted = totalInserted.add( new BigDecimal(bill));
-            } else{
+            if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
+                totalInserted = totalInserted.add(new BigDecimal(bill));
+                System.out.println("New Balance: $" + totalInserted.add(currentBalance));
+                System.out.println();
+
+            } else if(bill == 0){
+                break;
+            } else {
                 System.out.println("Please insert valid bill");
             }
-
-            //System.out.println("Do you want to feed more money? (Y/N)");
-        //}
+        }
         return totalInserted;
     }
 
@@ -106,5 +108,6 @@ public class UserInput {
 
         return item;
     }
+
 }
 

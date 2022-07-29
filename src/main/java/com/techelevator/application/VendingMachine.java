@@ -16,7 +16,7 @@ public class VendingMachine {
     MachineStartup machineStartup = new MachineStartup();
 
     private List<Inventory> listOfIndexSlots = machineStartup.createInventorySlots();
-    private BigDecimal currentRemainingBalance = new BigDecimal( 10.67);
+    private BigDecimal currentRemainingBalance = new BigDecimal( 10.00);
 
     public VendingMachine() {
         //this.listOfIndexSlots = machineStartup.createInventorySlots();
@@ -52,41 +52,43 @@ public class VendingMachine {
         }
     }
 
-    public List<Inventory> getListOfIndexSlots() {
-        return listOfIndexSlots;
-    }
-
     public void purchase() {
 
         while (true) {
-
             userOutput.displayPurchaseScreen();
 
             BigDecimal currentBalance = this.getCurrentRemainingBalance();
             String choice = userInput.getPurchasingScreenOptions(currentBalance);
-
-
             System.out.println(choice);
-            if (choice.equals("feed")) {
-                BigDecimal bill = userInput.feedBill();
-                feedMoney(bill);
 
-                System.out.println("You have fed $" + bill);
+            if (choice.equals("feed")) {
+                feedMoney(userInput.feedBill(currentBalance));
                 System.out.println("Current Balance: $" + getCurrentRemainingBalance());
 
             } else if (choice.equals("select")) {
+                while(true){
+                    //display inventory
+                    userOutput.displayInventory(this.listOfIndexSlots);
+                    //get selected item
+                    String selectedID = userInput.selectProduct();
+                    //verify slot exists
+                    int indexSlot = findProduct(selectedID);
+                    if(indexSlot >= 0){
+                    //print slot info and special message
+                        userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);
+                        reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
+                        userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
 
-                userOutput.displayInventory(this.listOfIndexSlots);
-                String selectedID = userInput.selectProduct();
-                System.out.println("slotID = " + selectedID);
+                        listOfIndexSlots.get(indexSlot).reduceProductRemaining();
+                        System.out.println("New List Object at " + indexSlot + " " + this.listOfIndexSlots.get(indexSlot).getProductRemaining());
 
-                int indexSlot = findProduct(selectedID);
+                        break;
 
-                System.out.println(listOfIndexSlots.get(indexSlot).getProductType());
+                    } else {
+                        System.out.println("Please enter a valid index slot.");
+                    }
 
-                //look at the list of inventory objects
-                    // find Inventory.getSlotID = A1
-
+                }
 
             } else if (choice.equals("finish")) {
                 calculateChange(getCurrentRemainingBalance());
@@ -134,6 +136,15 @@ public class VendingMachine {
                 doesExist = i;
             }
         }
+
         return doesExist;
     }
+
+    public void refreshList(int indexSlot, Inventory copy){
+        this.listOfIndexSlots.set(indexSlot, copy);
+    }
+
+//    public String stockLevel(int indexSlot){
+//        String stocklevel =
+//    }
 }
