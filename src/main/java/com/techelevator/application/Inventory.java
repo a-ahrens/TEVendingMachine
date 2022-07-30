@@ -10,7 +10,7 @@ public class Inventory {
     private String productName;
     private BigDecimal price;
     private String productType;
-    private int productRemaining = 1;
+    private int productRemaining = 6;
 
     @Override
     public String toString() {

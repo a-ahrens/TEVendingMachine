@@ -16,7 +16,7 @@ public class VendingMachine {
     MachineStartup machineStartup = new MachineStartup();
 
     private List<Inventory> listOfIndexSlots = machineStartup.createInventorySlots();
-    private BigDecimal currentRemainingBalance = new BigDecimal( 10.00);
+    private BigDecimal currentRemainingBalance = new BigDecimal( 0.00);
 
     public VendingMachine() {
         //this.listOfIndexSlots = machineStartup.createInventorySlots();
@@ -76,11 +76,20 @@ public class VendingMachine {
                     if(indexSlot >= 0){
                     //print slot info and special message
                         userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);
-                        reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
-                        userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
 
-                        listOfIndexSlots.get(indexSlot).reduceProductRemaining();
-                        System.out.println("New List Object at " + indexSlot + " " + this.listOfIndexSlots.get(indexSlot).getProductRemaining());
+                        int compare = getCurrentRemainingBalance().compareTo(listOfIndexSlots.get(indexSlot).getPrice());
+
+                        if(listOfIndexSlots.get(indexSlot).getProductRemaining() > 0
+                        && (compare == 1 || compare == 0 )){
+                            reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
+                            userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
+                            listOfIndexSlots.get(indexSlot).reduceProductRemaining();
+                        }else if(listOfIndexSlots.get(indexSlot).getProductRemaining() == 0){
+                            System.out.println("NO LONGER AVAILABLE");
+                        }
+                        else{
+                            System.out.println("MORE FUNDS NEEDED!");
+                        }
 
                         break;
 
@@ -125,7 +134,7 @@ public class VendingMachine {
         System.out.println("Quarters: " + numOfQuarters);
         System.out.println("Dimes: " + numOfDimes);
         System.out.println("Nickles: " + numOfNickles);
-        System.out.println("Pennies: " + numOfPennies);
+        //System.out.println("Pennies: " + numOfPennies);
     }
 
     public int findProduct(String selectedID){
@@ -140,11 +149,4 @@ public class VendingMachine {
         return doesExist;
     }
 
-    public void refreshList(int indexSlot, Inventory copy){
-        this.listOfIndexSlots.set(indexSlot, copy);
-    }
-
-//    public String stockLevel(int indexSlot){
-//        String stocklevel =
-//    }
 }
