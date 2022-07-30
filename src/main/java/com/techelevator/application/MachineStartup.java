@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MachineStartup {
-    private final String pathName = "src/main/resources/catering.csv";
+    private final String pathName = "src/main/resources";
     private final String fileName = "catering.csv";
 
     private List<String> inventoryLines = new ArrayList<String>(); // sample of each list index: "A1,U-Chews,1.65,Gum"
-    private File inventoryFile = new File(pathName);
+    private File inventoryFile = new File(pathName,fileName);
 
     public void loadInventoryList(){
         try(Scanner readFile = new Scanner(inventoryFile)){

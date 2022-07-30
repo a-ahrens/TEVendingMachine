@@ -14,14 +14,11 @@ public class VendingMachine {
     UserInput userInput = new UserInput();
     UserOutput userOutput = new UserOutput();
     MachineStartup machineStartup = new MachineStartup();
-
+    AuditLogger auditLogger = new AuditLogger();
     private List<Inventory> listOfIndexSlots = machineStartup.createInventorySlots();
     private BigDecimal currentRemainingBalance = new BigDecimal( 0.00);
 
-    public VendingMachine() {
-        //this.listOfIndexSlots = machineStartup.createInventorySlots();
-        //this.currentRemainingBalance = new BigDecimal( 0.00);
-    }
+
 
     public BigDecimal getCurrentRemainingBalance() {
         return currentRemainingBalance;
@@ -64,40 +61,11 @@ public class VendingMachine {
             if (choice.equals("feed")) {
                 feedMoney(userInput.feedBill(currentBalance));
                 System.out.println("Current Balance: $" + getCurrentRemainingBalance());
+              // auditLogger.auditFeed(getCurrentRemainingBalance());
+
 
             } else if (choice.equals("select")) {
-                while(true){
-                    //display inventory
-                    userOutput.displayInventory(this.listOfIndexSlots);
-                    //get selected item
-                    String selectedID = userInput.selectProduct();
-                    //verify slot exists
-                    int indexSlot = findProduct(selectedID);
-                    if(indexSlot >= 0){
-                    //print slot info and special message
-                        userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);
-
-                        int compare = getCurrentRemainingBalance().compareTo(listOfIndexSlots.get(indexSlot).getPrice());
-
-                        if(listOfIndexSlots.get(indexSlot).getProductRemaining() > 0
-                        && (compare == 1 || compare == 0 )){
-                            reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
-                            userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
-                            listOfIndexSlots.get(indexSlot).reduceProductRemaining();
-                        }else if(listOfIndexSlots.get(indexSlot).getProductRemaining() == 0){
-                            System.out.println("NO LONGER AVAILABLE");
-                        }
-                        else{
-                            System.out.println("MORE FUNDS NEEDED!");
-                        }
-
-                        break;
-
-                    } else {
-                        System.out.println("Please enter a valid index slot.");
-                    }
-
-                }
+                makeTransaction();
 
             } else if (choice.equals("finish")) {
                 calculateChange(getCurrentRemainingBalance());
@@ -105,7 +73,10 @@ public class VendingMachine {
                 break;
             }
         }
+
     }
+
+
 
     public void calculateChange(BigDecimal change) {
 
@@ -137,12 +108,48 @@ public class VendingMachine {
         //System.out.println("Pennies: " + numOfPennies);
     }
 
+    public void makeTransaction() {
+        while (true) {
+            //display inventory
+            userOutput.displayInventory(this.listOfIndexSlots);
+            //get selected item
+            String selectedID = userInput.selectProduct();
+            //verify slot exists
+            int indexSlot = findProduct(selectedID);
+            if (indexSlot >= 0) {
+                //print slot info and special message
+                userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);
+
+                int compare = getCurrentRemainingBalance().compareTo(listOfIndexSlots.get(indexSlot).getPrice());
+
+                if (listOfIndexSlots.get(indexSlot).getProductRemaining() > 0
+                        && (compare == 1 || compare == 0)) {
+                    reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
+                    userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
+                    listOfIndexSlots.get(indexSlot).reduceProductRemaining();
+                } else if (listOfIndexSlots.get(indexSlot).getProductRemaining() == 0) {
+
+                    System.out.println("\n\nNO LONGER AVAILABLE");
+                } else {
+                    System.out.println("\n\nMORE FUNDS NEEDED!");
+                }
+
+                break;
+
+            } else {
+                System.out.println("Please enter a valid index slot.");
+            }
+
+        }
+    }
+
     public int findProduct(String selectedID){
         int doesExist = -1;
 
         for(int i = 0; i < listOfIndexSlots.size(); i++) {
             if (listOfIndexSlots.get(i).getSlotId().equals(selectedID)) {
                 doesExist = i;
+                break;
             }
         }
 
@@ -150,3 +157,4 @@ public class VendingMachine {
     }
 
 }
+

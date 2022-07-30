@@ -1,5 +1,6 @@
 package com.techelevator.ui;
 
+import com.techelevator.application.AuditLogger;
 import com.techelevator.application.VendingMachine;
 
 import java.math.BigDecimal;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 public class UserInput {
 
     private Scanner scanner = new Scanner(System.in);
-
+    AuditLogger auditLogger = new AuditLogger();
     public String getHomeScreenOption() {
         System.out.println("What would you like to do?");
         System.out.println();
@@ -78,29 +79,32 @@ public class UserInput {
     public BigDecimal feedBill(BigDecimal currentBalance){
 
         BigDecimal totalInserted = new BigDecimal(0.00);
-
+        //auditLogger = new AuditLogger();
         while(true){
 
             System.out.println("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
-            System.out.println("If you are done adding money, enter 0");
+
             int bill = Integer.parseInt(scanner.nextLine());
+
+            System.out.println("\nIf you are done adding money, enter 0: ");
 
             if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
                 totalInserted = totalInserted.add(new BigDecimal(bill));
-                System.out.println("New Balance: $" + totalInserted.add(currentBalance));
+                System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
                 System.out.println();
-
+                auditLogger.auditFeed(bill, (totalInserted.add(currentBalance)));
             } else if(bill == 0){
                 break;
             } else {
-                System.out.println("Please insert valid bill");
+                System.out.println("\nPlease insert valid bill");
             }
+            auditLogger.closeWriter();
         }
         return totalInserted;
     }
 
     public String selectProduct(){
-        System.out.print("Please select an item: ");
+        System.out.print("\nPlease select an item: ");
 
         String selectedOption = scanner.nextLine();
         String item = selectedOption.trim().toUpperCase();

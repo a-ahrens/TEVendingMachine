@@ -27,7 +27,7 @@ public class UserOutput {
     public void displayInventory(List<Inventory> listOfIndexSlots){
         String productRemaining;
 
-        System.out.println("Slot:     Name:      Price:      Product Type:       Product Remaining: ");
+        System.out.println("Slot:     Name:      Price:      Product Type:       Product Remaining: \n");
         for (int i = 0; i < listOfIndexSlots.size(); i++) {
             productRemaining= "OUT OF STOCK";
             if (listOfIndexSlots.get(i).getProductRemaining() > 0 ){
