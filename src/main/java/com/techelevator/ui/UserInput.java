@@ -15,6 +15,9 @@ public class UserInput {
 
     private Scanner scanner = new Scanner(System.in);
     AuditLogger auditLogger = new AuditLogger();
+
+
+
     public String getHomeScreenOption() {
         System.out.println("What would you like to do?");
         System.out.println();
@@ -29,7 +32,6 @@ public class UserInput {
         String selectedOption = scanner.nextLine();
         String option = selectedOption.trim().toLowerCase();
         System.out.println();
-        //System.out.println("option = " + option);
 
         if (option.equals("d")) {
             return "display";
@@ -43,20 +45,9 @@ public class UserInput {
         else {
             return "";
         }
-
     }
 
-    public String getPurchasingScreenOptions(BigDecimal currentBalance) {
-        System.out.println("What would you like to do?");
-        System.out.println();
-
-        System.out.println("M) Feed Money");
-        System.out.println("S) Select Item");
-        System.out.println("F) Finish Transaction");
-        System.out.println();
-        System.out.println("Current money provided $" + currentBalance);
-        System.out.println();
-        System.out.print("Please select an option: ");
+    public String getPurchasingScreenInput() {
 
         String selectedOption = scanner.nextLine();
         String option = selectedOption.trim().toLowerCase();
@@ -74,37 +65,17 @@ public class UserInput {
         else {
             return "";
         }
-
     }
 
-    public BigDecimal feedBill(BigDecimal currentBalance){
+    public int inputFeedAmount(){
+        System.out.print("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
 
-        BigDecimal totalInserted = new BigDecimal(0.00);
+        System.out.println("\nIf you are done adding money, enter 0: ");
 
-        while(true){
+        int bill = Integer.parseInt(scanner.nextLine());
 
-            System.out.println("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
 
-            int bill = Integer.parseInt(scanner.nextLine());
-
-            System.out.println("\nIf you are done adding money, enter 0: ");
-
-            if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
-                totalInserted = totalInserted.add(new BigDecimal(bill));
-                System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
-                System.out.println();
-
-                String messageToLog = "Feed Money " + bill + " " + totalInserted.add(currentBalance);
-                auditLogger.auditFeed(messageToLog);
-
-            } else if(bill == 0){
-                break;
-            } else {
-                System.out.println("\nPlease insert valid bill");
-            }
-
-        }
-        return totalInserted;
+        return bill;
     }
 
     public String selectProduct(){

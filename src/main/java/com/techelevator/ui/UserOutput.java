@@ -4,6 +4,7 @@ import com.techelevator.application.Inventory;
 import com.techelevator.application.MachineStartup;
 import com.techelevator.application.VendingMachine;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,16 +43,28 @@ public class UserOutput {
     }
 
 
-    public void displayPurchaseScreen() {
+    public void displayPurchaseScreenOptions(BigDecimal currentBalance) {
         System.out.println();
         System.out.println("***************************************************");
         System.out.println("                      Purchase");
         System.out.println("***************************************************");
         System.out.println();
+        System.out.println("What would you like to do?");
+        System.out.println();
+
+        System.out.println("M) Feed Money");
+        System.out.println("S) Select Item");
+        System.out.println("F) Finish Transaction");
+        System.out.println();
+        System.out.println("Current money provided $" + currentBalance);
+        System.out.println();
+        System.out.print("Please select an option: ");
+
     }
 
     public void displaySlotInformation(int slotIndex, List<Inventory> listOfIndexSlots ){
         String productRemaining = "OUT OF STOCK";
+
         if (listOfIndexSlots.get(slotIndex).getProductRemaining() > 0 ){
             productRemaining = String.valueOf(listOfIndexSlots.get(slotIndex).getProductRemaining());
         }

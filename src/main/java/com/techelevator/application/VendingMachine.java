@@ -17,6 +17,8 @@ public class VendingMachine {
     UserOutput userOutput = new UserOutput();
     MachineStartup machineStartup = new MachineStartup();
     AuditLogger auditLogger = new AuditLogger();
+    Transaction transaction = new Transaction();
+
     private List<Inventory> listOfIndexSlots = machineStartup.createInventorySlots();
     private BigDecimal currentRemainingBalance = new BigDecimal( 0.00);
 
@@ -26,7 +28,7 @@ public class VendingMachine {
         return currentRemainingBalance;
     }
 
-    public void feedMoney(BigDecimal bill){
+    public void addMoney(BigDecimal bill){
         this.currentRemainingBalance = this.currentRemainingBalance.add(bill);
     }
 
@@ -44,7 +46,7 @@ public class VendingMachine {
             } else if (choice.equals("purchase")) {
                 purchase();
             } else if (choice.equals("exit")) {
-                // good bye
+                System.out.println("Thanks for shopping with Tech Elevator! Have a great day! :-) ");
                 break;
             }
         }
@@ -53,62 +55,28 @@ public class VendingMachine {
     public void purchase() {
 
         while (true) {
-            userOutput.displayPurchaseScreen();
 
             BigDecimal currentBalance = this.getCurrentRemainingBalance();
-            String choice = userInput.getPurchasingScreenOptions(currentBalance);
-            System.out.println(choice);
+
+            userOutput.displayPurchaseScreenOptions(currentBalance);
+            String choice = userInput.getPurchasingScreenInput();
 
             if (choice.equals("feed")) {
-                feedMoney(userInput.feedBill(currentBalance));
+                addMoney(transaction.feedBill(currentBalance));
                 System.out.println("Current Balance: $" + getCurrentRemainingBalance());
 
-
             } else if (choice.equals("select")) {
+                System.out.println("SELECT AN ITEM VIA INDEX SLOT");
                 makeTransaction();
 
             } else if (choice.equals("finish")) {
-                calculateChange(getCurrentRemainingBalance());
+                System.out.println("DON'T FORGET YOUR CHANGE!");
+                transaction.calculateChange(getCurrentRemainingBalance());
                 reduceCurrentRemainingBalance(getCurrentRemainingBalance());
                 break;
             }
         }
 
-    }
-
-
-
-    public void calculateChange(BigDecimal change) {
-
-        String message = "Change given: " + change + " " + change.subtract(change);
-        auditLogger.auditFeed(message);
-
-        BigDecimal quantity = change.divide(new BigDecimal(1));
-        int numOfDollars = quantity.intValue();
-
-        change = change.subtract(new BigDecimal(numOfDollars));
-        change = change.multiply(new BigDecimal(100));
-
-        quantity = change.divide(new BigDecimal(25));
-        int numOfQuarters = quantity.intValue();
-        change = change.subtract(new BigDecimal(numOfQuarters * 25));
-
-        quantity = change.divide(new BigDecimal(10));
-        int numOfDimes = quantity.intValue();
-        change = change.subtract(new BigDecimal(numOfDimes * 10));
-
-        quantity = change.divide(new BigDecimal(5));
-        int numOfNickles = quantity.intValue();
-        change = change.subtract(new BigDecimal(numOfNickles * 5));
-
-        change = change.round(new MathContext(1, RoundingMode.HALF_EVEN));
-        int numOfPennies = change.intValue();
-
-        System.out.println("Dollars: " + numOfDollars);
-        System.out.println("Quarters: " + numOfQuarters);
-        System.out.println("Dimes: " + numOfDimes);
-        System.out.println("Nickles: " + numOfNickles);
-        //System.out.println("Pennies: " + numOfPennies);
     }
 
     public void makeTransaction() {
