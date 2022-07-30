@@ -28,7 +28,8 @@ public class UserInput {
 
         String selectedOption = scanner.nextLine();
         String option = selectedOption.trim().toLowerCase();
-        System.out.println("option = " + option);
+        System.out.println();
+        //System.out.println("option = " + option);
 
         if (option.equals("d")) {
             return "display";
@@ -79,7 +80,7 @@ public class UserInput {
     public BigDecimal feedBill(BigDecimal currentBalance){
 
         BigDecimal totalInserted = new BigDecimal(0.00);
-        //auditLogger = new AuditLogger();
+
         while(true){
 
             System.out.println("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
@@ -92,13 +93,16 @@ public class UserInput {
                 totalInserted = totalInserted.add(new BigDecimal(bill));
                 System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
                 System.out.println();
-                auditLogger.auditFeed(bill, (totalInserted.add(currentBalance)));
+
+                String messageToLog = "Feed Money " + bill + " " + totalInserted.add(currentBalance);
+                auditLogger.auditFeed(messageToLog);
+
             } else if(bill == 0){
                 break;
             } else {
                 System.out.println("\nPlease insert valid bill");
             }
-            auditLogger.closeWriter();
+
         }
         return totalInserted;
     }

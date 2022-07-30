@@ -13,26 +13,27 @@ public class AuditLogger {
     private final String pathName = "src/main/resources";
     private final String fileName = "audit.txt";
     File auditFile;
-   PrintWriter writer;
+    PrintWriter writer;
+
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM-dd-YYYY hh:mm:ss a");
 
 
     public AuditLogger(){
         this.auditFile = new File(pathName, fileName);
-             //dtf.format(LocalDateTime.now());
-        try  {
-           writer = new PrintWriter(new FileOutputStream(this.auditFile, true));
 
+        try  {
+           this.writer = new PrintWriter(new FileOutputStream(this.auditFile, true));
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public void auditFeed(int bill, BigDecimal currentBalance){
+    public void auditFeed(String messageToLog){
 
-          writer.print(dtf.format(LocalDateTime.now()) + " Feed " + bill + " "+ currentBalance);
-           writer.flush();
+            this.writer.println(dtf.format(LocalDateTime.now()) + ": " + messageToLog);
+            this.writer.flush();
+
     }
 
     public void closeWriter(){

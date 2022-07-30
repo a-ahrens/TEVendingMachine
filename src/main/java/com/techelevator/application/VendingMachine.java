@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VendingMachine {
+
+
     UserInput userInput = new UserInput();
     UserOutput userOutput = new UserOutput();
     MachineStartup machineStartup = new MachineStartup();
@@ -37,7 +39,6 @@ public class VendingMachine {
             userOutput.displayHomeScreen();
             String choice = userInput.getHomeScreenOption();
 
-            System.out.println(choice);
             if (choice.equals("display")) {
                 userOutput.displayInventory(this.listOfIndexSlots);
             } else if (choice.equals("purchase")) {
@@ -61,7 +62,6 @@ public class VendingMachine {
             if (choice.equals("feed")) {
                 feedMoney(userInput.feedBill(currentBalance));
                 System.out.println("Current Balance: $" + getCurrentRemainingBalance());
-              // auditLogger.auditFeed(getCurrentRemainingBalance());
 
 
             } else if (choice.equals("select")) {
@@ -79,6 +79,9 @@ public class VendingMachine {
 
 
     public void calculateChange(BigDecimal change) {
+
+        String message = "Change given: " + change + " " + change.subtract(change);
+        auditLogger.auditFeed(message);
 
         BigDecimal quantity = change.divide(new BigDecimal(1));
         int numOfDollars = quantity.intValue();
@@ -127,6 +130,14 @@ public class VendingMachine {
                     reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
                     userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
                     listOfIndexSlots.get(indexSlot).reduceProductRemaining();
+
+
+                    String messageToLog = listOfIndexSlots.get(indexSlot).getProductName() + " "
+                                        + listOfIndexSlots.get(indexSlot).getSlotId() + " "
+                                        + listOfIndexSlots.get(indexSlot).getPrice().add(currentRemainingBalance) + " "
+                                        + currentRemainingBalance;
+                    auditLogger.auditFeed(messageToLog);
+
                 } else if (listOfIndexSlots.get(indexSlot).getProductRemaining() == 0) {
 
                     System.out.println("\n\nNO LONGER AVAILABLE");

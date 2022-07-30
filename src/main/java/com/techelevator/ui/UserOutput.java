@@ -26,18 +26,19 @@ public class UserOutput {
 
     public void displayInventory(List<Inventory> listOfIndexSlots){
         String productRemaining;
-
-        System.out.println("Slot:     Name:      Price:      Product Type:       Product Remaining: \n");
+        System.out.println("============================== MENU ==============================");
+        System.out.println("|| Slot   Name               Price       Product Type     Stock ||");
         for (int i = 0; i < listOfIndexSlots.size(); i++) {
             productRemaining= "OUT OF STOCK";
             if (listOfIndexSlots.get(i).getProductRemaining() > 0 ){
                productRemaining = String.valueOf(listOfIndexSlots.get(i).getProductRemaining());
            }
-            System.out.println(listOfIndexSlots.get(i).getSlotId() + "   "
-                    + listOfIndexSlots.get(i).getProductName() +  "  " + listOfIndexSlots.get(i).getPrice() +
-                  "     "  +  listOfIndexSlots.get(i).getProductType() +
-                "    " + productRemaining);
+            System.out.printf("%-2s %-6s %-18s %-11.2f %-15s %2s %6s", "||", listOfIndexSlots.get(i).getSlotId(),
+                    listOfIndexSlots.get(i).getProductName(), listOfIndexSlots.get(i).getPrice(), listOfIndexSlots.get(i).getProductType(), productRemaining, "||");
+            System.out.println();
         }
+        System.out.println("==================================================================");
+        System.out.println();
     }
 
 
