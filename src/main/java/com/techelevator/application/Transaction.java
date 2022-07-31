@@ -10,8 +10,7 @@ public class Transaction {
 
     UserInput userInput = new UserInput();
     AuditLogger auditLogger = new AuditLogger();
-
-
+    //VendingMachine vendingMachine = new VendingMachine();
 
 
     public BigDecimal feedBill(BigDecimal currentBalance){
@@ -78,6 +77,7 @@ public class Transaction {
         System.out.println("Nickles: " + numOfNickles);
         //System.out.println("Pennies: " + numOfPennies);
     }
+
 
 
 }

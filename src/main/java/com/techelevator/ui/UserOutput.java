@@ -81,6 +81,7 @@ public class UserOutput {
         messages.put("Drink", "Drinky, Drinky, Slurp Slurp!");
         messages.put("Gum", "Chewy, Chewy, Lots Of Bubbles!");
 
+        System.out.println();
         System.out.println(messages.get(itemType));
     }
 
