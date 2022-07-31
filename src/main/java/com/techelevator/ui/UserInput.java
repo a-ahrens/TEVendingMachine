@@ -39,6 +39,9 @@ public class UserInput {
         else if (option.equals("e")) {
             return "exit";
         }
+        else if (option.equals("s")) {
+            return "sales";
+        }
         else {
             return "";
         }
@@ -68,13 +71,19 @@ public class UserInput {
         System.out.print("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
         System.out.println("If you are done adding money, enter 0: ");
 
-        int bill = Integer.parseInt(scanner.nextLine());
+        int bill = -1;
 
+        try {
+            bill = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e){
+            System.out.println("!!! PLEASE INSERT A VALID BILL !!!");
+
+        }
         return bill;
     }
 
     public String selectProduct(){
-        System.out.print("\nPlease select an item: ");
+        System.out.print("\nPlease select an item or enter 0 to return to the Purchase Menu: ");
 
         String selectedOption = scanner.nextLine();
         String item = selectedOption.trim().toUpperCase();
@@ -83,5 +92,12 @@ public class UserInput {
         return item;
     }
 
+    public String runSalesReport(){
+        String selectedOption = scanner.nextLine();
+        String choice = selectedOption.trim().toLowerCase();
+        System.out.println();
+
+        return choice;
+    }
 }
 

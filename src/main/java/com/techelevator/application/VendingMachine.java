@@ -18,16 +18,20 @@ public class VendingMachine {
     MachineStartup machineStartup = new MachineStartup();
     AuditLogger auditLogger = new AuditLogger();
     Transaction transaction = new Transaction();
+    //Sales sales = new Sales();
 
     private List<Inventory> listOfIndexSlots = machineStartup.createInventorySlots();
-    private BigDecimal currentRemainingBalance = new BigDecimal( 0.00);
+    private BigDecimal currentRemainingBalance = new BigDecimal( 5.00);
 
+    public VendingMachine(){
+        //sales.loadSalesMap(listOfIndexSlots);
+    }
 
     public BigDecimal getCurrentRemainingBalance() {
         return currentRemainingBalance;
     }
 
-    public void addMoney(BigDecimal bill){
+    public void addMoneyToCurrentRemainingBalance(BigDecimal bill){
         this.currentRemainingBalance = this.currentRemainingBalance.add(bill);
     }
 
@@ -41,21 +45,26 @@ public class VendingMachine {
             String choice = userInput.getHomeScreenOption();
 
             if (choice.equals("display")) {
-                userOutput.displayInventoryTop();
-                userOutput.displayInventory(this.listOfIndexSlots);
-                userOutput.displayInventoryBottom();
+                userOutput.displayFullInventory(this.listOfIndexSlots);
 
             } else if (choice.equals("purchase")) {
-                purchase();
+                purchaseOptions();
 
             } else if (choice.equals("exit")) {
-                System.out.println("Thanks for shopping with Tech Elevator! Have a great day! :-) ");
+                System.out.println("Thanks for shopping with Taste Elevator! Have a great day! :-) ");
                 break;
+            } else if (choice.equals("sales")) {
+                userOutput.displaySalesMenu();
+                if (userInput.runSalesReport().equals("y")){
+                    //sales.createSalesReport();
+                } else {
+                    userOutput.displayHomeScreen();
+                }
             }
         }
     }
 
-    public void purchase() {
+    public void purchaseOptions() {
 
         while (true) {
 
@@ -65,12 +74,11 @@ public class VendingMachine {
             String choice = userInput.getPurchasingScreenInput();
 
             if (choice.equals("feed")) {
-                addMoney(transaction.feedBill(currentBalance));
+                addMoneyToCurrentRemainingBalance (transaction.feedBill(currentBalance));
                 System.out.println("Current Balance: $" + getCurrentRemainingBalance());
 
             } else if (choice.equals("select")) {
-                System.out.println("SELECT AN ITEM VIA INDEX SLOT");
-                //makeTransaction(this.listOfIndexSlots);
+                System.out.println("PLEASE SELECT AN ITEM VIA INDEX SLOT");
                 makeTransaction();
 
             } else if (choice.equals("finish")) {
@@ -80,46 +88,57 @@ public class VendingMachine {
                 break;
             }
         }
-
     }
 
     public void makeTransaction() {
         while (true) {
-            userOutput.displayInventory(this.listOfIndexSlots); //display inventory
 
-            String selectedID = userInput.selectProduct();      //get selected item
-            int indexSlot = findProduct(selectedID);            //verify slot exists, return value of list Location
+            userOutput.displayFullInventory(this.listOfIndexSlots);
+            String selectedID = userInput.selectProduct();
+
+            if(selectedID.equals("0")){
+                break;
+            }
+
+            int indexSlot = findProduct(selectedID);            //verify slot exists, return index location
 
             if (indexSlot >= 0) {
-                userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);  //print slot info and special message
 
-                int compare = getCurrentRemainingBalance().compareTo(listOfIndexSlots.get(indexSlot).getPrice());
-
-                if (listOfIndexSlots.get(indexSlot).getProductRemaining() > 0 && (compare == 1 || compare == 0)) {
-                    reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
-                    userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
-                    listOfIndexSlots.get(indexSlot).reduceProductRemaining();
-
-
-                    String messageToLog = listOfIndexSlots.get(indexSlot).getProductName() + " "
-                                        + listOfIndexSlots.get(indexSlot).getSlotId() + " "
-                                        + listOfIndexSlots.get(indexSlot).getPrice().add(currentRemainingBalance) + " "
-                                        + currentRemainingBalance;
-                    auditLogger.auditFeed(messageToLog);
-
-                } else if (listOfIndexSlots.get(indexSlot).getProductRemaining() == 0) {
-
-                    System.out.println("\n\nNO LONGER AVAILABLE");
-                } else {
-                    System.out.println("\n\nMORE FUNDS NEEDED!");
-                }
+                userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);        //print slot info and special message
+                int balanceVsPrice = getCurrentRemainingBalance().compareTo(listOfIndexSlots.get(indexSlot).getPrice());
+                validatePurchase(indexSlot, balanceVsPrice);
 
                 break;
 
             } else {
-                System.out.println("Please enter a valid index slot.");
+                System.out.println("\n!!!! PLEASE ENTER A VALID INDEX SLOT !!!!");
             }
 
+        }
+    }
+
+    public void validatePurchase(int indexSlot, int balanceVsPrice){
+        if (listOfIndexSlots.get(indexSlot).getProductRemaining() > 0 && (balanceVsPrice == 1 || balanceVsPrice == 0)) {
+
+            reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
+            System.out.println("Remaining balance: $" + currentRemainingBalance);
+            userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
+            listOfIndexSlots.get(indexSlot).reduceProductRemaining();
+            //sales.incrementItemsSold(listOfIndexSlots.get(indexSlot).getProductName());
+
+            String messageToLog = String.format("%-17s %-3s $%5.2f $%5.2f",
+                                        listOfIndexSlots.get(indexSlot).getProductName(),
+                                        listOfIndexSlots.get(indexSlot).getSlotId(),
+                                        listOfIndexSlots.get(indexSlot).getPrice().add(currentRemainingBalance),
+                                        currentRemainingBalance);
+
+            auditLogger.auditFeed(messageToLog);
+
+        } else if (listOfIndexSlots.get(indexSlot).getProductRemaining() == 0) {
+
+            System.out.println("\n\n SORRY! NO LONGER AVAILABLE :_( ");
+        } else {
+            System.out.println("\n\n $$$ MORE FUNDS NEEDED $$$");
         }
     }
 

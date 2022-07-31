@@ -31,14 +31,14 @@ public class AuditLogger {
 
     public void auditFeed(String messageToLog){
 
-            this.writer.println(dtf.format(LocalDateTime.now()) + ": " + messageToLog);
+            this.writer.println(dtf.format(LocalDateTime.now()) + " " + messageToLog);
             this.writer.flush();
+
 
     }
 
     public void closeWriter(){
         writer.flush();
         writer.close();
-        //writer = null;
     }
 }

@@ -5,6 +5,7 @@ import com.techelevator.application.MachineStartup;
 import com.techelevator.application.VendingMachine;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,12 @@ public class UserOutput {
         System.out.println();
     }
 
+    public void displayFullInventory(List<Inventory> listOfIndexSlots){
+        displayInventoryTop();
+        displayInventory(listOfIndexSlots);
+        displayInventoryBottom();
+    }
+
     public void displayPurchaseScreenOptions(BigDecimal currentBalance) {
         System.out.println();
         System.out.println("***************************************************");
@@ -75,9 +82,9 @@ public class UserOutput {
             productRemaining = String.valueOf(listOfIndexSlots.get(slotIndex).getProductRemaining());
         }
 
+        System.out.println();
         System.out.println("Product: " + listOfIndexSlots.get(slotIndex).getProductName()
-                + " Price: " + listOfIndexSlots.get(slotIndex).getPrice()
-                + " Stock: " + productRemaining);
+                + " Price: " + listOfIndexSlots.get(slotIndex).getPrice());
     }
 
     public String displayTypeMessage(String itemType) {
@@ -96,4 +103,10 @@ public class UserOutput {
         }
         return message;
     }
+
+    public void displaySalesMenu(){
+        System.out.println("SALES REPORT");
+        System.out.println("Do you want to generate a Sales Report? (Y/N)" );
+    }
+
 }

@@ -14,79 +14,57 @@ public class Transaction {
     UserOutput userOutput = new UserOutput();
     AuditLogger auditLogger = new AuditLogger();
 
+
     public BigDecimal feedBill(BigDecimal currentBalance){
 
+        BigDecimal insertedBill = new BigDecimal(0.00);
         BigDecimal totalInserted = new BigDecimal(0.00);
+        BigDecimal updatedBalance = currentBalance;
 
         while(true){
 
             int bill = userInput.inputFeedAmount();
+//            if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
+//                totalInserted = totalInserted.add(new BigDecimal(bill));
+//                System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
+//                System.out.println();
+//
+//                String messageToLog = "Feed Money " + bill + " " + totalInserted.add(currentBalance);
+//                auditLogger.auditFeed(messageToLog);
+//
+//            }
 
-            if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
-                totalInserted = totalInserted.add(new BigDecimal(bill));
-                System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
-                System.out.println();
+            //insertedBill = accumulateBills(bill, updatedBalance);
+            insertedBill = validateBill(bill);
+            totalInserted = totalInserted.add(insertedBill);
 
-                String messageToLog = "Feed Money " + bill + " " + totalInserted.add(currentBalance);
-                auditLogger.auditFeed(messageToLog);
+            System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
+            System.out.println();
 
-            } else if(bill == 0){
+            if(bill == 0){
                 break;
-            } else {
-                System.out.println("\nPlease insert valid bill");
             }
+            String messageToLog = String.format("%-21s $%-3.2s $%6.2f", "MONEY FED: ", bill, totalInserted.add(currentBalance));
+            //String messageToLog = "Feed Money " + bill + " " + totalInserted.add(currentBalance);
+            auditLogger.auditFeed(messageToLog);
+        }
+        return totalInserted;
+    }
+
+    public BigDecimal validateBill(int bill){
+        BigDecimal totalInserted =  new BigDecimal(0.00);
+        if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
+            totalInserted = totalInserted.add(new BigDecimal(bill));
 
         }
         return totalInserted;
     }
 
-//    public void makeTransaction(List<Inventory> listOfIndexSlots) {
-//        while (true) {
-//            userOutput.displayInventory(listOfIndexSlots); //display inventory
-//
-//            String selectedID = userInput.selectProduct();      //get selected item
-//            int indexSlot = findProduct(selectedID);            //verify slot exists, return value of list Location
-//
-//            if (indexSlot >= 0) {
-//                userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);  //print slot info and special message
-//
-//                int compare = getCurrentRemainingBalance().compareTo(listOfIndexSlots.get(indexSlot).getPrice());
-//
-//                if (listOfIndexSlots.get(indexSlot).getProductRemaining() > 0 && (compare == 1 || compare == 0)) {
-//                    reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
-//                    userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
-//                    listOfIndexSlots.get(indexSlot).reduceProductRemaining();
-//
-//
-//                    String messageToLog = listOfIndexSlots.get(indexSlot).getProductName() + " "
-//                            + listOfIndexSlots.get(indexSlot).getSlotId() + " "
-//                            + listOfIndexSlots.get(indexSlot).getPrice().add(currentRemainingBalance) + " "
-//                            + currentRemainingBalance;
-//                    auditLogger.auditFeed(messageToLog);
-//
-//                } else if (listOfIndexSlots.get(indexSlot).getProductRemaining() == 0) {
-//
-//                    System.out.println("\n\nNO LONGER AVAILABLE");
-//                } else {
-//                    System.out.println("\n\nMORE FUNDS NEEDED!");
-//                }
-//
-//                break;
-//
-//            } else {
-//                System.out.println("Please enter a valid index slot.");
-//            }
-//
-//        }
-//    }
-
-
-
-
     public String calculateChange(BigDecimal change) {
 
-        String message = "Change given: " + change + " " + change.subtract(change);
-        auditLogger.auditFeed(message);
+        String messageToLog = String.format("%-21s $%3.2f $%6.2f", "CHANGE GIVEN: ", change, change.subtract(change));
+        //String message = "Change given: " + change + " " + change.subtract(change);
+        auditLogger.auditFeed(messageToLog);
 
         BigDecimal quantity = change.divide(new BigDecimal(1));
         int numOfDollars = quantity.intValue();
@@ -121,7 +99,6 @@ public class Transaction {
         return changeStatement;
 
     }
-
 
 
 }

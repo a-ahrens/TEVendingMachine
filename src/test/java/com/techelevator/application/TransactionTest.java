@@ -11,20 +11,35 @@ public class TransactionTest {
 
     Transaction transaction = new Transaction();
 
-//    @Test//1
-//    public void feedBill_Test() {
-//
-//    //Arrange
-//    BigDecimal expectedTotalInserted = new BigDecimal(36.00);
-//    // type in 1, 5, 10 ,20, 0 manually
-//
-//    //Act
-//    BigDecimal actualTotalInserted = transaction.feedBill(new BigDecimal(0.00));
-//
-//    //Assert
-//    assertEquals(expectedTotalInserted, actualTotalInserted);
-//
-//    }
+    @Test
+    public void validateBill_10() {
+
+        //Arrange
+        BigDecimal expected = new BigDecimal(10.00);
+        int bill = 10;
+
+        //Act
+        BigDecimal actual = transaction.validateBill(bill);
+
+        //Assert
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void validateBill_InvalidBill() {
+
+        //Arrange
+        BigDecimal expected = new BigDecimal(0.00);
+        int bill = 2;
+
+        //Act
+        BigDecimal actual = transaction.validateBill(bill);
+
+        //Assert
+        assertEquals(expected, actual);
+
+    }
 
     @Test
     public void calculateChange_EveryChangeType() {
@@ -51,4 +66,18 @@ public class TransactionTest {
         //Assert
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void calculateChange_NoBills() {
+
+        //Arrange
+        String expected = "B0 Q0 D0 N0";
+
+        //Act
+        String actual = transaction.calculateChange(new BigDecimal(0.01));
+
+        //Assert
+        assertEquals(expected, actual);
+    }
+
 }
