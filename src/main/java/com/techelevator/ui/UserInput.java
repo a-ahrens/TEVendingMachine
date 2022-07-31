@@ -14,9 +14,6 @@ import java.util.Scanner;
 public class UserInput {
 
     private Scanner scanner = new Scanner(System.in);
-    AuditLogger auditLogger = new AuditLogger();
-
-
 
     public String getHomeScreenOption() {
         System.out.println("What would you like to do?");
@@ -51,7 +48,7 @@ public class UserInput {
 
         String selectedOption = scanner.nextLine();
         String option = selectedOption.trim().toLowerCase();
-        System.out.println("option = " + option);
+        System.out.println();
 
         if (option.equals("m")) {
             return "feed";
@@ -69,11 +66,9 @@ public class UserInput {
 
     public int inputFeedAmount(){
         System.out.print("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
-
-        System.out.println("\nIf you are done adding money, enter 0: ");
+        System.out.println("If you are done adding money, enter 0: ");
 
         int bill = Integer.parseInt(scanner.nextLine());
-
 
         return bill;
     }

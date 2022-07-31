@@ -23,7 +23,6 @@ public class VendingMachine {
     private BigDecimal currentRemainingBalance = new BigDecimal( 0.00);
 
 
-
     public BigDecimal getCurrentRemainingBalance() {
         return currentRemainingBalance;
     }
@@ -42,9 +41,13 @@ public class VendingMachine {
             String choice = userInput.getHomeScreenOption();
 
             if (choice.equals("display")) {
+                userOutput.displayInventoryTop();
                 userOutput.displayInventory(this.listOfIndexSlots);
+                userOutput.displayInventoryBottom();
+
             } else if (choice.equals("purchase")) {
                 purchase();
+
             } else if (choice.equals("exit")) {
                 System.out.println("Thanks for shopping with Tech Elevator! Have a great day! :-) ");
                 break;
@@ -57,8 +60,8 @@ public class VendingMachine {
         while (true) {
 
             BigDecimal currentBalance = this.getCurrentRemainingBalance();
-
             userOutput.displayPurchaseScreenOptions(currentBalance);
+
             String choice = userInput.getPurchasingScreenInput();
 
             if (choice.equals("feed")) {
@@ -67,6 +70,7 @@ public class VendingMachine {
 
             } else if (choice.equals("select")) {
                 System.out.println("SELECT AN ITEM VIA INDEX SLOT");
+                //makeTransaction(this.listOfIndexSlots);
                 makeTransaction();
 
             } else if (choice.equals("finish")) {
@@ -81,20 +85,17 @@ public class VendingMachine {
 
     public void makeTransaction() {
         while (true) {
-            //display inventory
-            userOutput.displayInventory(this.listOfIndexSlots);
-            //get selected item
-            String selectedID = userInput.selectProduct();
-            //verify slot exists
-            int indexSlot = findProduct(selectedID);
+            userOutput.displayInventory(this.listOfIndexSlots); //display inventory
+
+            String selectedID = userInput.selectProduct();      //get selected item
+            int indexSlot = findProduct(selectedID);            //verify slot exists, return value of list Location
+
             if (indexSlot >= 0) {
-                //print slot info and special message
-                userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);
+                userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);  //print slot info and special message
 
                 int compare = getCurrentRemainingBalance().compareTo(listOfIndexSlots.get(indexSlot).getPrice());
 
-                if (listOfIndexSlots.get(indexSlot).getProductRemaining() > 0
-                        && (compare == 1 || compare == 0)) {
+                if (listOfIndexSlots.get(indexSlot).getProductRemaining() > 0 && (compare == 1 || compare == 0)) {
                     reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
                     userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
                     listOfIndexSlots.get(indexSlot).reduceProductRemaining();

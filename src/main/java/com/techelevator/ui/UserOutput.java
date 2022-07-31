@@ -25,10 +25,14 @@ public class UserOutput {
         System.out.println();
     }
 
-    public void displayInventory(List<Inventory> listOfIndexSlots){
-        String productRemaining;
+    public void displayInventoryTop(){
         System.out.println("============================== MENU ==============================");
         System.out.println("|| Slot   Name               Price       Product Type     Stock ||");
+    }
+
+    public void displayInventory(List<Inventory> listOfIndexSlots){
+        String productRemaining;
+
         for (int i = 0; i < listOfIndexSlots.size(); i++) {
             productRemaining= "OUT OF STOCK";
             if (listOfIndexSlots.get(i).getProductRemaining() > 0 ){
@@ -38,10 +42,12 @@ public class UserOutput {
                     listOfIndexSlots.get(i).getProductName(), listOfIndexSlots.get(i).getPrice(), listOfIndexSlots.get(i).getProductType(), productRemaining, "||");
             System.out.println();
         }
+    }
+
+    public void displayInventoryBottom(){
         System.out.println("==================================================================");
         System.out.println();
     }
-
 
     public void displayPurchaseScreenOptions(BigDecimal currentBalance) {
         System.out.println();
@@ -74,15 +80,20 @@ public class UserOutput {
                 + " Stock: " + productRemaining);
     }
 
-    public void displayTypeMessage(String itemType){
+    public String displayTypeMessage(String itemType) {
+        String message = "";
+
         Map<String, String> messages = new HashMap<>();
         messages.put("Munchy", "Munchy, Munchy, so Good!");
         messages.put("Candy", "Sugar, Sugar, so Sweet!");
         messages.put("Drink", "Drinky, Drinky, Slurp Slurp!");
         messages.put("Gum", "Chewy, Chewy, Lots Of Bubbles!");
 
-        System.out.println();
-        System.out.println(messages.get(itemType));
+        if (!itemType.equals("") && !itemType.equals(null)) {
+            message = messages.get(itemType);
+            System.out.println();
+            System.out.println(message);
+        }
+        return message;
     }
-
 }

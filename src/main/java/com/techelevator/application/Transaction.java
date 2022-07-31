@@ -1,17 +1,18 @@
 package com.techelevator.application;
 
 import com.techelevator.ui.UserInput;
+import com.techelevator.ui.UserOutput;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.List;
 
 public class Transaction {
 
     UserInput userInput = new UserInput();
+    UserOutput userOutput = new UserOutput();
     AuditLogger auditLogger = new AuditLogger();
-    //VendingMachine vendingMachine = new VendingMachine();
-
 
     public BigDecimal feedBill(BigDecimal currentBalance){
 
@@ -20,12 +21,6 @@ public class Transaction {
         while(true){
 
             int bill = userInput.inputFeedAmount();
-
-//            System.out.println("Machine takes 1, 5, 10, and 20 dollar bills. Please insert one at a time.");
-//
-//            int bill = Integer.parseInt(scanner.nextLine());
-//
-//            System.out.println("\nIf you are done adding money, enter 0: ");
 
             if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
                 totalInserted = totalInserted.add(new BigDecimal(bill));
@@ -45,7 +40,50 @@ public class Transaction {
         return totalInserted;
     }
 
-    public void calculateChange(BigDecimal change) {
+//    public void makeTransaction(List<Inventory> listOfIndexSlots) {
+//        while (true) {
+//            userOutput.displayInventory(listOfIndexSlots); //display inventory
+//
+//            String selectedID = userInput.selectProduct();      //get selected item
+//            int indexSlot = findProduct(selectedID);            //verify slot exists, return value of list Location
+//
+//            if (indexSlot >= 0) {
+//                userOutput.displaySlotInformation(indexSlot, this.listOfIndexSlots);  //print slot info and special message
+//
+//                int compare = getCurrentRemainingBalance().compareTo(listOfIndexSlots.get(indexSlot).getPrice());
+//
+//                if (listOfIndexSlots.get(indexSlot).getProductRemaining() > 0 && (compare == 1 || compare == 0)) {
+//                    reduceCurrentRemainingBalance(this.listOfIndexSlots.get(indexSlot).getPrice());
+//                    userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
+//                    listOfIndexSlots.get(indexSlot).reduceProductRemaining();
+//
+//
+//                    String messageToLog = listOfIndexSlots.get(indexSlot).getProductName() + " "
+//                            + listOfIndexSlots.get(indexSlot).getSlotId() + " "
+//                            + listOfIndexSlots.get(indexSlot).getPrice().add(currentRemainingBalance) + " "
+//                            + currentRemainingBalance;
+//                    auditLogger.auditFeed(messageToLog);
+//
+//                } else if (listOfIndexSlots.get(indexSlot).getProductRemaining() == 0) {
+//
+//                    System.out.println("\n\nNO LONGER AVAILABLE");
+//                } else {
+//                    System.out.println("\n\nMORE FUNDS NEEDED!");
+//                }
+//
+//                break;
+//
+//            } else {
+//                System.out.println("Please enter a valid index slot.");
+//            }
+//
+//        }
+//    }
+
+
+
+
+    public String calculateChange(BigDecimal change) {
 
         String message = "Change given: " + change + " " + change.subtract(change);
         auditLogger.auditFeed(message);
@@ -71,11 +109,17 @@ public class Transaction {
         change = change.round(new MathContext(1, RoundingMode.HALF_EVEN));
         int numOfPennies = change.intValue();
 
+        String changeStatement = "B" + numOfDollars + " Q" + numOfQuarters + " D"
+                                + numOfDimes + " N" + numOfNickles;
+
         System.out.println("Dollars: " + numOfDollars);
         System.out.println("Quarters: " + numOfQuarters);
         System.out.println("Dimes: " + numOfDimes);
         System.out.println("Nickles: " + numOfNickles);
         //System.out.println("Pennies: " + numOfPennies);
+
+        return changeStatement;
+
     }
 
 
