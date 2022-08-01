@@ -18,14 +18,10 @@ public class VendingMachine {
     MachineStartup machineStartup = new MachineStartup();
     AuditLogger auditLogger = new AuditLogger();
     Transaction transaction = new Transaction();
-    //Sales sales = new Sales();
+    Sales sales = new Sales();
 
     private List<Inventory> listOfIndexSlots = machineStartup.createInventorySlots();
-    private BigDecimal currentRemainingBalance = new BigDecimal( 5.00);
-
-    public VendingMachine(){
-        //sales.loadSalesMap(listOfIndexSlots);
-    }
+    private BigDecimal currentRemainingBalance = new BigDecimal( 0.00);
 
     public BigDecimal getCurrentRemainingBalance() {
         return currentRemainingBalance;
@@ -48,7 +44,7 @@ public class VendingMachine {
                 userOutput.displayFullInventory(this.listOfIndexSlots);
 
             } else if (choice.equals("purchase")) {
-                purchaseOptions();
+                openPurchaseOptions();
 
             } else if (choice.equals("exit")) {
                 System.out.println("Thanks for shopping with Taste Elevator! Have a great day! :-) ");
@@ -56,7 +52,7 @@ public class VendingMachine {
             } else if (choice.equals("sales")) {
                 userOutput.displaySalesMenu();
                 if (userInput.runSalesReport().equals("y")){
-                    //sales.createSalesReport();
+                    sales.createSalesReport(listOfIndexSlots);
                 } else {
                     userOutput.displayHomeScreen();
                 }
@@ -64,7 +60,7 @@ public class VendingMachine {
         }
     }
 
-    public void purchaseOptions() {
+    public void openPurchaseOptions() {
 
         while (true) {
 
@@ -124,7 +120,7 @@ public class VendingMachine {
             System.out.println("Remaining balance: $" + currentRemainingBalance);
             userOutput.displayTypeMessage(this.listOfIndexSlots.get(indexSlot).getProductType());
             listOfIndexSlots.get(indexSlot).reduceProductRemaining();
-            //sales.incrementItemsSold(listOfIndexSlots.get(indexSlot).getProductName());
+            listOfIndexSlots.get(indexSlot).incrementProductSold();
 
             String messageToLog = String.format("%-17s %-3s $%5.2f $%5.2f",
                                         listOfIndexSlots.get(indexSlot).getProductName(),

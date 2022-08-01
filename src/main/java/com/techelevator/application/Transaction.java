@@ -24,46 +24,40 @@ public class Transaction {
         while(true){
 
             int bill = userInput.inputFeedAmount();
-//            if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
-//                totalInserted = totalInserted.add(new BigDecimal(bill));
-//                System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
-//                System.out.println();
-//
-//                String messageToLog = "Feed Money " + bill + " " + totalInserted.add(currentBalance);
-//                auditLogger.auditFeed(messageToLog);
-//
-//            }
-
-            //insertedBill = accumulateBills(bill, updatedBalance);
-            insertedBill = validateBill(bill);
-            totalInserted = totalInserted.add(insertedBill);
-
-            System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
-            System.out.println();
+            boolean isValidBill = validateBill(bill);
 
             if(bill == 0){
                 break;
             }
-            String messageToLog = String.format("%-21s $%-3.2s $%6.2f", "MONEY FED: ", bill, totalInserted.add(currentBalance));
-            //String messageToLog = "Feed Money " + bill + " " + totalInserted.add(currentBalance);
-            auditLogger.auditFeed(messageToLog);
+
+            if(isValidBill == true) {
+                insertedBill = new BigDecimal(bill);
+                totalInserted = totalInserted.add(insertedBill);
+
+                System.out.println("\nNew Balance: $" + totalInserted.add(currentBalance));
+                System.out.println();
+
+                String messageToLog = String.format("%-21s $%5.2f $%5.2f", "MONEY FED: ", insertedBill, totalInserted.add(currentBalance));
+                auditLogger.auditFeed(messageToLog);
+            }
         }
         return totalInserted;
     }
 
-    public BigDecimal validateBill(int bill){
+    public boolean validateBill(int bill){
+        boolean isValid = false;
         BigDecimal totalInserted =  new BigDecimal(0.00);
         if (bill == 1 || bill == 5 || bill == 10 || bill == 20) {
             totalInserted = totalInserted.add(new BigDecimal(bill));
-
+            isValid = true;
         }
-        return totalInserted;
+        //return totalInserted;
+        return isValid;
     }
 
     public String calculateChange(BigDecimal change) {
 
-        String messageToLog = String.format("%-21s $%3.2f $%6.2f", "CHANGE GIVEN: ", change, change.subtract(change));
-        //String message = "Change given: " + change + " " + change.subtract(change);
+        String messageToLog = String.format("%-21s $%-5.2f $%5.2f", "CHANGE GIVEN: ", change, change.subtract(change));
         auditLogger.auditFeed(messageToLog);
 
         BigDecimal quantity = change.divide(new BigDecimal(1));
@@ -99,6 +93,7 @@ public class Transaction {
         return changeStatement;
 
     }
+
 
 
 }

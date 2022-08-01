@@ -10,7 +10,8 @@ public class Inventory {
     private String productName;
     private BigDecimal price;
     private String productType;
-    private int productRemaining = 1;
+    private int productRemaining = 6;
+    private int productSold = 0;
 
     @Override
     public String toString() {
@@ -20,6 +21,7 @@ public class Inventory {
                 ", price=" + price +
                 ", productType='" + productType + '\'' +
                 ", productRemaining=" + productRemaining +
+                ", productSold=" + productSold +
                 '}';
     }
 
@@ -50,7 +52,17 @@ public class Inventory {
         return productRemaining;
     }
 
+    public int getProductSold(){
+        return productSold;
+    }
+
     public void reduceProductRemaining(){
         this.productRemaining = this.productRemaining - 1;
     }
+
+    public void incrementProductSold(){
+        this.productSold += 1;
+    }
+
+
 }

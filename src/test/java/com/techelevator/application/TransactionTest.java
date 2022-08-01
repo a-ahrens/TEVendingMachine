@@ -15,11 +15,26 @@ public class TransactionTest {
     public void validateBill_10() {
 
         //Arrange
-        BigDecimal expected = new BigDecimal(10.00);
+        boolean expected = true;
         int bill = 10;
 
         //Act
-        BigDecimal actual = transaction.validateBill(bill);
+        boolean actual = transaction.validateBill(bill);
+
+        //Assert
+        assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void validateZero() {
+
+        //Arrange
+        boolean expected = false;
+        int bill = 0;
+
+        //Act
+        boolean actual = transaction.validateBill(bill);
 
         //Assert
         assertEquals(expected, actual);
@@ -30,11 +45,11 @@ public class TransactionTest {
     public void validateBill_InvalidBill() {
 
         //Arrange
-        BigDecimal expected = new BigDecimal(0.00);
+        boolean expected = false;
         int bill = 2;
 
         //Act
-        BigDecimal actual = transaction.validateBill(bill);
+        boolean actual = transaction.validateBill(bill);
 
         //Assert
         assertEquals(expected, actual);
