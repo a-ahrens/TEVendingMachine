@@ -18,6 +18,7 @@ public class Sales {
     LocalDateTime currentLocalDateTime = LocalDateTime.now();
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM-dd-YYYY hh-mm-ss a ");
     String formattedDateTime = currentLocalDateTime.format(dateTimeFormatter);
+
     private final String FILENAME = formattedDateTime + "Sales Report.txt";
 
     File salesFile;

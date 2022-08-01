@@ -51,7 +51,7 @@ public class Transaction {
             totalInserted = totalInserted.add(new BigDecimal(bill));
             isValid = true;
         }
-        //return totalInserted;
+
         return isValid;
     }
 
